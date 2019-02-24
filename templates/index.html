@@ -16,13 +16,27 @@
       <p> </p>
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Data!</a></p>
     </div>
-    <img src="{{ marsContent.featuredImage }}" alt="Mars featuredImage">
-    <h2>{{marsContent.newsTitle}}</h2>
-    <h5>{{marsContent.newsPara}}</h2>
-    <h3>Current Weather on Mars: {{ marsContent.weatherTweets }}</h3>
+        <img src="{{ marsContent.featuredImage }}" alt="Mars featuredImage">
+        <h2>{{marsContent.newsTitle}}</h2>
+        <h5>{{marsContent.newsPara}}</h5>
+        <h3>Current Weather on Mars: {{ marsContent.weatherTweets }}</h3>
+    </div>
+    <div>
+        <ul style="list-style: none;">
+            <!-- Loop through the dictionary -->
+            <table border="1">
+                <tr><th>Attribute</th><th>Value</th></tr>
+                {% for eachFact in marsContent.marsFacts %}
+                <tr>
+                <td><li style="color:blue">{{ eachFact.Attributes }}</li></td>
+                <td><li style="color:blue">{{ eachFact.Value }}</li></td>
+                </tr>
+                {% endfor %}
+            </table>
+          </ul>
     
-  </div>
-  </div>
+    </div>
+  
 </body>
 
 </html>

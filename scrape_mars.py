@@ -1,15 +1,24 @@
 from bs4 import BeautifulSoup as bs
 from splinter import Browser
 import pandas as pd
+from splinter.exceptions import ElementDoesNotExist
+import time
 
 def init_browser():
+
+    from splinter import Browser
     # actual path to the chromedriver
-    executable_path = {'executable_path': 'C:/Users/Kurian/Anaconda3/envs/myenv/chromedriver'}
-    browser = Browser('chrome', **executable_path, headless=False)
+    executable_path = {'executable_path': 'C:/chromedriver'}
+    #browser = Browser("chrome", executable_path="chromedriver", headless=True)
+    browser = Browser('chrome', **executable_path)
+    return Browser
 
 def scrape():
     browser = init_browser()
     # Visit visitcostarica.herokuapp.com
+
+    executable_path = {'executable_path': 'C:/chromedriver'}
+    browser = Browser('chrome', **executable_path)
     url = "https://mars.nasa.gov/news"    
     browser.visit(url)
 
@@ -39,7 +48,7 @@ def scrape():
 
     #image url to the full size .jpg image.
     imgUrl  = soup.find('article')['style'].replace('background-image: url(','').replace(');', '')[1:-1]
-
+    #soup.find_all('article', style_ ='background-image')
     # Website Url
     jplurl = 'https://www.jpl.nasa.gov'
 
@@ -77,11 +86,11 @@ def scrape():
     factsofMars = pd.read_html(marsfactsurl)
     marsfactsdf = factsofMars[0]
     marsfactsdf.columns = ['Attributes','Value']
-    marsfactsdf.set_index('Attributes',inplace=True)
+    #marsfactsdf.set_index('Attributes',inplace=True)
     marsfactsdf.to_html()
-    marsfactDict = marsfactsdf.to_dict(orient='dict')
+    marsfactDict = marsfactsdf.to_dict(orient='records')
     # add to Dict
-    marsData["marsFacts"]= marsfactDict['Value'] 
+    marsData["marsFacts"]= marsfactDict
 
     # Close the browser after scraping
     browser.quit()
